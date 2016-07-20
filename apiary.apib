@@ -45,8 +45,8 @@ List all agents for a certain `CLIENT_KEY`.
 
 |  Name | Description | Example |
 | ---------------| ------------| --------|
-| agent_id | Agent ID  | fOBg4dXAPTHSoil6LywgfYA |
-| agent_name | Name of the agent | Peter Pan |
+| agent_id | agent ID  | 1 |
+| agent_name | name of the agent | Peter Pan |
 | agent_email | email address of the agent | peter@neverland.net |
 
 
@@ -78,7 +78,7 @@ Create a new AGENT
 
 |  Name | Description | Example |
 | ---------------| ------------| --------|
-| agent_id | agent id | 1 |
+| agent_id | agent ID | 1 |
 
 
 
@@ -113,7 +113,7 @@ Get information about a certain agent by `agent_id`
 
   |  Name | Description | Example |
   | ---------------| ------------| --------|
-  | agent_id | agent ID | 1|
+  | agent_id | agent ID | 1 |
   | agent_name | name of the agent | Peter Pan |
   | agent_email | email address | peter@neverland.net |
 
@@ -135,15 +135,17 @@ Update a AGENT
 
 |  Name | Description | Example |
 | ---------------| ------------| --------|
-| agent_name (optional) | Name of the agent | Peter Pan |
-| agent_email (optional) | Email address | peter@neverland.net |
+| username (optional) | username of the agent | Peter Pan |
+| agent_email (optional) | email address | peter@neverland.net |
 
 
 **Response Body:**
 
-|  Name | Description | Example |
+| Name | Description | Example |
 | ---------------| ------------| --------|
-| agent_id | agent id | 1 |
+| agent_name | name of the agent | Peter |
+| agent_id | agent ID | 1 |
+| agent_email | email address | peter@neverland.net |
 
 + Request (application/json)
 
