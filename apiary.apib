@@ -13,7 +13,7 @@ The Surfly REST API allows you to integrate the functionality of our dashboard i
 
  * Clients - Create new clients *(reseller only)*
  * Agents - Manage your agents
- * Sessions - Get an overview of all your session
+ * Sessions - Get an overview of all your sessions
  * Queue - Manipulate the incoming Queue for your agents
 
 To access our API, you will need to authenticate by using basic HTTP authentication.  In addition, some API calls require extra information such as:
@@ -527,7 +527,7 @@ Get information about a certain queue by `queue_id`
 
 Return all your clients by `RESELLER_KEY`
 
-**Repsonse Body:**
+**Response Body:**
 
 |  Name | Description | Example |
 | ---------------| ------------| --------|
@@ -558,7 +558,7 @@ Add a new client as `RESELLER_KEY`
 | ---------------| ------------| --------|
 | company_name | Name of new company | Neverland |
 
-**Repsonse Body:**
+**Response Body:**
 
 A list of objects containing the following parameter:
 
@@ -592,7 +592,7 @@ A list of objects containing the following parameter:
 
 Get information about a specific `client_id`
 
-**Repsonse Body:**
+**Response Body:**
 
 |  Name | Description | Example |
 | ---------------| ------------| --------|
@@ -636,7 +636,7 @@ Update a client as `RESELLER_KEY`
 | ---------------| ------------| --------|
 | company_name | New Name of company | Peter Pan |
 
-**Repsonse Body:**
+**Response Body:**
 
 A list of objects containing the following parameter:
 
@@ -714,7 +714,7 @@ active_session, agent_id, year, month are optional
 
 # Invoice Collection [/get/invoice/details/?api_key={API_KEY}]
 
-**response body**
+**Response body**
 
 |  Name | Description | Example |
 | ---------------| ------------| --------|
@@ -764,7 +764,7 @@ active_session, agent_id, year, month are optional
 
 Returns a list of the logs 
 
-**response body**
+**Response body**
 
 |  Name | Description | Example |
 | ---------------| ------------| --------|
@@ -790,13 +790,13 @@ Returns a list of the logs
 
 ### Create log instance [POST]
 
-**request body**
+**Request body**
 | Name | Description | Event |
 | ---------------| ------------| --------|
 | session id | the session id | "flogr0sRQ1usugvheahwQ" |
 | details | the message you want to log | log message |
 
-**response body**
+**Response body**
 
 |  Name | Description | Example |
 | ---------------| ------------| --------|
@@ -834,7 +834,7 @@ Returns a list of the logs
 
 lists all the logs from the session
 
-**response body**
+**Response body**
 
 |  Name | Description | Example |
 | ---------------| ------------| --------|
