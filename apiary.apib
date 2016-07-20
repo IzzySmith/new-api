@@ -1,0 +1,807 @@
+FORMAT: 1A
+HOST: https://api.surfly.com/v2/
+
+# The REST API
+
+----
+
+# REST API
+
+By using the REST API, you can integrate our websharing technology into your own application or build a thin layer around our technology. You can completely customise Surfly and automate the management of client and agent creation through the REST API.
+
+The Surfly REST API allows you to integrate the functionality of our dashboard in a programatical manner. With our API you can do the following things:
+
+ * Clients - Create new clients *(reseller only)*
+ * Agents - Manage your agents
+ * Sessions - Get an overview of all your session
+ * Queue - Manipulate the incoming Queue for your agents
+
+To access our API, you will need to authenticate by using basic HTTP authentication.  In addition, some API calls require extra information such as:
+
+ * RESELLER_KEY  *(reseller only)*
+ * CLIENT_KEY
+
+Both keys can be found on your API page in your dashboard. We recommend that you keep your CLIENT_KEY and RESELLER_KEY secret at all times.
+
+Below you can find the code examples with how to make the REST calls. You will need your REST API key (which can be found in the integration panel, just below the widget code). 
+
+
+<a name="reference_code"></a>
+
+########################################
+# Group Agents
+
+
+# Agents Collection [/agents/?api_key={API_KEY}]
+
++ Parameters
+    + API_KEY (string, `3b57bd2db21c46d2875508b982968d26`)
+
+### List all agents [GET]
+
+List all agents for a certain `CLIENT_KEY`.
+
+**Response Body:**
+
+|  Name | Description | Example |
+| ---------------| ------------| --------|
+| agent_id | Agent ID  | fOBg4dXAPTHSoil6LywgfYA |
+| agent_name | Name of the agent | Peter Pan |
+| agent_email | email address of the agent | peter@neverland.net |
+
+
+
++ Response 200 (application/json)
+
+        [
+            {
+                "agent_id": 1,
+                "agent_name": "Peter Pan",
+                "agent_email": "peter@neverland.net"
+            }
+        ]
+
+### Create a new agent [POST]
+
+Create a new AGENT
+            
+**Request Body:**
+
+  |  Name | Description | Example |
+  | ---------------| ------------| --------|
+  | username | username of the agent | Peter Pan |
+  | agent_email | email address | peter@neverland.net |
+  | password | password | Pass@123 |
+
+
+**Response Body:**
+
+|  Name | Description | Example |
+| ---------------| ------------| --------|
+| agent_id | agent id | 1 |
+
+
+
+
++ Request (application/json)
+
+        {
+            "username": "Peter Pan",
+            "agent_email": "peter@neverland.net",
+            "password":"Pass@123"
+        }
+
++ Response 200 (application/json)
+
+        {
+            "agent_id": "1"
+        }
+
+
+
+# Agent information [/agents/{AGENT_ID}/?api_key={API_KEY}]
+
++ Parameters
+    + API_KEY (string, `3b57bd2db21c46d2875508b982968d26`)
+    + AGENT_ID (string, `2`)
+
+### Get Agent Information [GET]
+
+Get information about a certain agent by `agent_id`
+
+**Response Body:**
+
+  |  Name | Description | Example |
+  | ---------------| ------------| --------|
+  | agent_id | agent ID | 1|
+  | agent_name | name of the agent | Peter Pan |
+  | agent_email | email address | peter@neverland.net |
+
+
++ Response 200 (application/json)
+
+        {
+            "agent_id": 2,
+            "agent_name": "John Doe",
+            "agent_email": "john.doe@example.com"
+        }
+
+
+### Update an agent [PUT]
+
+Update a AGENT
+            
+**Request Body:**
+
+|  Name | Description | Example |
+| ---------------| ------------| --------|
+| agent_name (optional) | Name of the agent | Peter Pan |
+| agent_email (optional) | Email address | peter@neverland.net |
+
+
+**Response Body:**
+
+|  Name | Description | Example |
+| ---------------| ------------| --------|
+| agent_id | agent id | 1 |
+
++ Request (application/json)
+
+        {
+            "username": "Peter",
+            "agent_email": "peter@neverland.com"
+        }
+
++ Response 200 (application/json)
+
+        {
+            "agent_name": "Peter",
+            "agent_id": 2,
+            "agent_email": "peter@neverland.com"
+        }
+
+### Delete an agent [DELETE]
+
+Removes an agent. You need to pass your API key and agent_id when you make the call.
+
+
++ Response 200 (application/json)
+
+        {
+            "response": "Agent has been removed successfully"
+        }
+
+
+
+
+
+########################################
+# Group Sessions
+
+
+# Sessions Collection [/sessions/?api_key={API_KEY}]
+
++ Parameters
+    + API_KEY (string, `3b57bd2db21c46d2875508b982968d26`)
+
+### List all Sessions [GET]
+
+List all session for a certain `CLIENT_KEY`
+
+
+**Response Body:**
+
+
+|  Name | Description | Example |
+| ---------------| ------------| --------|
+| session_id | unique ID of the session | fOBg4dXAPTHSoil6LywgfYA |
+| agent_id |  ID of the agent | AEOUoeauAOEUpaoeu |
+| viewer_link | the link that must be opened in a ***viewer***. | https://session.surfly.com/fHrD6TMmRrurMevgidxyw |
+| start_time | time the session started | Fri, 10 okt 10:20 AM |
+| duration | Length of the session | 123 |
+
+
++ Response 200 (application/json)
+
+        [{
+            "session_id": "fOBg4dXAPTHSoil6LywgfYA",
+            "agent_id": "fOBg4dXAPTHSoil6LywgfYA",
+            "viewer_link": "https://session.surfly.com/fwqcOuuMwTty7ii3kcA8Q",
+            "start_time": "Fri, 10 okt 10:20 AM",
+            "duration": 123
+        }]
+
+### Create a session [POST]
+
+**Request Body:**
+
+|  Name | Description | Example |
+| ---------------| ------------| --------|
+| url | Url to co-browse | http://www.google.com |
+| agent_id | ID of the agent | fOBg4dXAPTHSoil6LywgfYA |
+
+
+**Response Body:**
+
+|  Name | Description | Example |
+| ---------------| ------------| --------|
+| id | session id, which can be used to end the session | fOBg4dXAPTHSoil6LywgfYA |
+| leader_link |  the link that must be opened in a ***leader*** (controlling) browser. It has a 2 minute time out attached to it, if not used within that time, the session will be closed. | https://session.surfly.com/mWdJBh0xZQMmSlx0dhbUNSg |
+| viewer_link | the link that must be opened in a ***viewer***. | https://session.surfly.com/fHrD6TMmRrurMevgidxyw |
+
+
+
++ Request (application/json)
+
+        {
+            "url": "http://www.surfly.com/"
+        }
+
++ Response 200 (application/json)
+
+        {
+            "id": "fm6pApJ18SvqlVEpnCx8Qmg",
+            "agent_id": "jGBAOLFaRv6NG57AZubK8A",
+            "viewer_link": "https://session.surfly.com/fm6pApJ18SvqlVEpnCx8Qmg",
+            "start_time": "2014-12-11T15:12:22.447Z",
+            "end_time": null,
+            "duration": null,
+            "ip_leader": "127.0.0.1",
+            "leader_link": "https://session.surfly.com/mUBRJyslQStVXPEwUwFyQ",
+            "ip_follower": "127.0.0.1",
+            "emails_send": [
+            {
+              "to": [],
+              "from": null
+            }
+            ]
+        }
+
+
+
+# Active Sessions Collection [/sessions/?api_key={API_KEY}&active_session=true]
+
++ Parameters
+    + API_KEY (string, `3b57bd2db21c46d2875508b982968d26`)
+
+### List all Active Sessions [GET]
+
+List all ACTIVE session for a certain `CLIENT_KEY`
+
+
+**Response Body:**
+
+
+|  Name | Description | Example |
+| ---------------| ------------| --------|
+| session_id | unique ID of the session | fOBg4dXAPTHSoil6LywgfYA |
+| agent_id |  ID of the agent | AEOUoeauAOEUpaoeu |
+| viewer_link | the link that must be opened in a ***viewer***. | https://session.surfly.com/fHrD6TMmRrurMevgidxyw |
+| start_time | time the session started | Fri, 10 okt 10:20 AM |
+| duration | Length of the session | 123 |
+
++ Response 200 (application/json)
+
+        [{
+            "session_id": "fOBg4dXAPTHSoil6LywgfYA",
+            "agent_id": "fOBg4dXAPTHSoil6LywgfYA",
+            "viewer_link": "https://session.surfly.com/fwqcOuuMwTty7ii3kcA8Q",
+            "start_time": "Fri, 10 okt 10:20 AM",
+            "duration": 123
+        }]
+
+# Agent Sessions Collection [/sessions/?api_key={API_KEY}&active_session=true&agent_id=1&year=2015&month=01]
+
++ Parameters
+    + API_KEY (string, `3b57bd2db21c46d2875508b982968d26`)
+
+### List Active Sessions for Agent [GET]
+
+List all ACTIVE sessions for a certain `Agent`, `Year`, `Month`
+
+active_session, agent_id, year, month are optional
+
+**Response Body:**
+
+
+|  Name | Description | Example |
+| ---------------| ------------| --------|
+| session_id | unique ID of the session | fOBg4dXAPTHSoil6LywgfYA |
+| agent_id |  ID of the agent | AEOUoeauAOEUpaoeu |
+| viewer_link | the link that must be opened in a ***viewer***. | https://session.surfly.com/fHrD6TMmRrurMevgidxyw |
+| start_time | time the session started | Fri, 10 okt 10:20 AM |
+| duration | Length of the session | 123 |
+
+
++ Response 200 (application/json)
+
+        [{
+            "session_id": "fOBg4dXAPTHSoil6LywgfYA",
+            "agent_id": "fOBg4dXAPTHSoil6LywgfYA",
+            "viewer_link": "https://session.surfly.com/fwqcOuuMwTty7ii3kcA8Q",
+            "start_time": "Fri, 10 okt 10:20 AM",
+            "duration": 123
+        }]
+
+
+
+
+# Session Information [/sessions/{SESSION_ID}/?api_key={API_KEY}]
+
++ Parameters
+    + API_KEY (string, `3b57bd2db21c46d2875508b982968d26`)
+    + SESSION_ID (string, `fuSHr0sRQ1usugvheahwQ`)
+
+
+### Get session information [GET]
+
+Get information about a certain session or end a certain session.
+
+**Response Body:**
+
+|  Name | Description | Example |
+| ---------------| ------------| --------|
+| id | session id, which can be used to end the session | fOBg4dXAPTHSoil6LywgfYA |
+| agent_id |  ID of the agent | AEOUoeauAOEUpaoeu |
+| viewer_link | the link that must be opened in a ***viewer***. | https://session.surfly.com/fHrD6TMmRrurMevgidxyw |
+| start_time | time the session started | Fri, 10 okt 2014 10:20:24 |
+| end_time | time the session ended | Fri, 10 okt 2014 10:51:46 |
+| duration | Length of the session (in seconds) |  1882 |
+| ip_leader | IP address of leader | 192.168.1.1 |
+| ip_followers | comma seperated list of IP's of followers | 10.0.0.1, 10.0.0.2 |
+| emails_send | list of email invatiations send | agent@company.com, client@company2.com |
+
++ Response 200 (application/json)
+
+        {
+            "id": "fwqcOuuMwTty7ii3kcA8Q",
+            "agent_id": 1,
+            "viewer_link": "https://session.surfly.com/fwqcOuuMwTty7ii3kcA8Q",
+            "start_time": "Fri, 10 okt 2014 10:20:24",
+            "end_time": "Fri, 10 okt 2014 10:51:46",
+            "duration": 1882,
+            "ip_leader": "192.168.1.1",
+            "leader_link": "",
+            "ip_follower": "",
+            "emails_send": [
+                                {
+                                    "to": [],
+                                    "from": null
+                                }
+                            ]
+        }
+
+
+### End a session [DELETE]
+
+
++ Response 200 (application/json)
+
+        {
+            "response":""
+        }
+
+
+
+
+
+
+
+
+########################################
+# Group Queue
+
+Manage and maintain the QUEUE for a certain client.
+
+
+# Queue Collection [/queue/?api_key={API_KEY}]
+
++ Parameters
+    + API_KEY (string, `3b57bd2db21c46d2875508b982968d26`)
+
+### List all Active Sessions in the Queue [GET]
+
+List all items in the support Queue for a certain `CLIENT_KEY`.
+
+| Name | Description | Example |
+| ---------------| ------------| --------|
+| start time | | 1 |
+| session | | 1 |
+| url | | "" |
+
+    "start_time": 1,
+    "session": 1,
+    "url": ""
+
++ Response 200 (application/json)
+
+        [
+            {
+                "start_time": 1,
+                "session": 1,
+                "url": ""
+            }
+        ]
+
+### Add an item to the Queue [POST]
+
+A new item can be put in the Queue, this item will auto expire after 30 seconds. In order to make sure that your item stays alive you will need to repeat the request with the same ID.
+
+**Request Body:**
+
+|  Name | Description | Example |
+| ---------------| ------------| --------|
+| url | Url to co-browse | http://www.google.com |
+| id | ID of item in the Queue (optional) | fOBg4dXAPTHSoil6LywgfYA |
+
+
+**Response Body:**
+
+|  Name | Description | Example |
+| ---------------| ------------| --------|
+| id | Queue id, which can be used to identify the item in the queue  | fOBg4dXAPTHSoil6LywgfYA |
+
+
++ Request (application/json)
+
+        {
+            "url": "http://www.example.com/",
+            "id": "fuSHr0sRQ1usugvheahwQ"
+        }
+
++ Response 200 (application/json)
+
+        {
+            "start_time": "",
+            "session": 1,
+            "url": ""
+        }
+
+
+# Queue information [/queue/{QUEUE_ID}/?api_key={API_KEY}]
+
++ Parameters
+    + API_KEY (string, `3b57bd2db21c46d2875508b982968d26`)
+    + QUEUE_ID (string, `fuSHr0sRQ1usugvheahwQ`)
+
+### Get Queue Information [GET]
+
+Get information about a certain queue by `queue_id`
+
+**Response Body:**
+
+|  Name | Description | Example |
+| ---------------| ------------| --------|
+| company | Name of the company | Company name = ABC  |
+| queue_id | Session ID| 31 |
+| queue_start_time | Queue Start Time | 2014-11-03T08:22:41.075Z |
+| ip_address | IP Address | 192.168.1.130|
+| join_link | Queue Join Link | http://surfly.com/ |
+
+
+
++ Response 200 (application/json)
+
+        {
+            "start_time": "2014-11-03T08:22:41.075Z",
+            "session": "fuSHr0sRQ1usugvheahwQ",
+            "url": "http://example.com/"
+        }
+
+
+### Remove item from the Queue [DELETE]
+
+**Request Body:**
+
+|  Name | Description | Example |
+| ---------------| ------------| --------|
+| id | ID of item in the Queue (optional) | 25 |
+
+
++ Request (application/json)
+
+        {
+            "id": "fuSHr0sRQ1usugvheahwQ"
+        }
+
++ Response 200 (application/json)
+
+        {
+            "detail":""
+        }
+
+
+
+########################################
+# Group Clients
+
+# Clients Collection [/clients/{RESELLER_KEY}/?api_key={API_KEY}]
+
++ Parameters
+    + RESELLER_KEY (string, `02fbfd63b54341c1828e6a2426311788`)
+    + API_KEY (string, `3b57bd2db21c46d2875508b982968d26`)
+
+### Lists all your clients [GET]
+
+Return all your clients by `RESELLER_KEY`
+
+**Repsonse Body:**
+
+|  Name | Description | Example |
+| ---------------| ------------| --------|
+| company_name | Name of Company | Neverland |
+| client_key | Client Key | AOEUaoeuntsPDe |
+| agent_count | Number of agents | 15 |
+
+
++ Response 200 (application/json)
+
+
+        [{
+            "company_name": "Neverland",
+            "client_key": "AOEUaoeuntsPDe",
+            "agent_count": 15,
+            "widget_key": "24d1414c71a94cbf9f205ed4fc4999b5",
+            "rest_key": "3b57bd2db21c46d2875508b982968d26",
+            "domains": "example.com, *.example.com"
+        }]
+
+### Create a new client [POST]
+
+Add a new client as `RESELLER_KEY`
+
+**Request Body:**
+
+|  Name | Description | Example |
+| ---------------| ------------| --------|
+| company_name | Name of new company | Neverland |
+
+**Repsonse Body:**
+
+A list of objects containing the following parameter:
+
+|  Name | Description | Example |
+| ---------------| ------------| --------|
+| company_name | Name of company | Neverland |
+| client_key | Client Key | AOEUaoeuntsPDe |
+
+
++ Request (application/json)
+
+        {
+            "company_name": "Test User"
+        }
+
++ Response 200 (application/json)
+
+        {
+            "company_name": "Neverland",
+            "client_key": "fOBg4dXAPTHSoil6LywgfYA"
+        }
+
+# Client Information [/clients/{RESELLER_KEY}/{CLIENT_ID}/?api_key={API_KEY}]
+
++ Parameters
+    + RESELLER_KEY (string, `02fbfd63b54341c1828e6a2426311788`)
+    + API_KEY (string, `3b57bd2db21c46d2875508b982968d26`)
+    + CLIENT_ID (string, `63668234b4aa19dd436e6a76ab8ae000`)
+
+### Get Client Information [GET]
+
+Get information about a specific `client_id`
+
+**Repsonse Body:**
+
+|  Name | Description | Example |
+| ---------------| ------------| --------|
+| company_name | Name of company | Neverland |
+| client_key | Client Key | AOEUaoeuntsPDe |
+| agent_count | Number of agents | 15 |
+
+
++ Response 200 (application/json)
+
+        {
+            "company_name": "Neverland",
+            "client_key": "AOEUaoeuntsPDe",
+            "agent_count": 15,
+            "widget_key": "24d1414c71a94cbf9f205ed4fc4999b5",
+            "rest_key": "3b57bd2db21c46d2875508b982968d26",
+            "domains": "example.com, *.example.com"
+        }
+
+### Set Client Domain List [POST]
+
++ Request (application/json)
+
+        {
+            "domains": "example.com, *.example.com"
+        }
+
++ Response 200 (application/json)
+
+        {
+            "domains": "example.com, *.example.com"
+        }
+
+### Update a client [PUT]
+
+Update a client as `RESELLER_KEY`
+
+**Request Body:**
+
+|  Name | Description | Example |
+| ---------------| ------------| --------|
+| company_name | New Name of company | Peter Pan |
+
+**Repsonse Body:**
+
+A list of objects containing the following parameter:
+
+|  Name | Description | Example |
+| ---------------| ------------| --------|
+| company_name | Name of company | Peter Pan |
+| client_key | Client Key | AOEUaoeuntsPDe |
+
+
+
++ Request (application/json)
+
+        {
+            "company_name": "Peter Pan"
+        }
+
++ Response 200 (application/json)
+
+        {
+            "company_name": "Peter Pan"
+        }
+
+### Delete the Client [DELETE]
+
++ Response 200 (application/json)
+
+        {
+            "response":"Client has been removed Successfully"
+        }
+
+
+
+
+
+# Reseller Sessions Collection [/sessions/?api_key={API_KEY}&clientkey={CLIENT_KEY}&active_session=true&year=2015&month=01]
+
++ Parameters
+    + CLIENT_KEY (string, `00063668234b4aa19dd436e6a76ab8ae`)
+    + API_KEY (string, `3b57bd2db21c46d2875508b982968d26`)
+
+
+### Example: List Active Sessions for Reseller's Client [GET]
+
+List all ACTIVE sessions for a certain `Client`, `Year`, `Month`
+
+active_session, agent_id, year, month are optional
+
+**Response Body:**
+
+
+|  Name | Description | Example |
+| ---------------| ------------| --------|
+| session_id | unique ID of the session | fOBg4dXAPTHSoil6LywgfYA |
+| agent_id |  ID of the agent | AEOUoeauAOEUpaoeu |
+| viewer_link | the link that must be opened in a ***viewer***. | https://session.surfly.com/fHrD6TMmRrurMevgidxyw |
+| start_time | time the session started | Fri, 10 okt 10:20 AM |
+| duration | Length of the session | 123 |
+
+
++ Response 200 (application/json)
+
+        [{
+            "session_id": "fOBg4dXAPTHSoil6LywgfYA",
+            "agent_id": "fOBg4dXAPTHSoil6LywgfYA",
+            "viewer_link": "https://session.surfly.com/fwqcOuuMwTty7ii3kcA8Q",
+            "start_time": "Fri, 10 okt 10:20 AM",
+            "duration": 123
+        }]
+
+
+
+########################################
+# Group Invoice
+
+
+# Invoice Collection [/get/invoice/details/?api_key={API_KEY}]
+
++ Parameters
+    + API_KEY (string, `3b57bd2db21c46d2875508b982968d26`)
+
+### Lists your current month's invoice [GET]
+
++ Response 200 (application/json)
+
+        [{
+            "item_list": [{
+                "amount": 40,
+                "description": "Date from 2015-06-29 to 2015-01-29",
+                "unit_price": 0.67,
+                "quantity": 60
+            }],
+            "issue_date": "2015-6-06",
+            "to_address": "ABC,1221,Netherlands,4343",
+            "from_address": "Surfly Admin, Netherlands",
+            "payment_term": 14,
+            "sub_total": 1490,
+            "currency": "euro",
+            "invoice_number": 5,
+            "total": 1490
+        }]
+
+
+########################################
+# Group Logs
+
+# Logs Collection [/logs/?api_key={API_KEY}]
+
++ Parameters
+    + API_KEY (string, `jj34bd2db21c46d2875508b982968d26`)
+
+### List all logs [GET]
+
+
++ Response 200 (application/json)
+
+        {
+            "next": null,
+            "previous": null,
+            "results": [{
+                "id": 1,
+                "agent_id": 4,
+                "created": "2016-05-30T15:13:03.253096Z",
+                "session_id": "flogr0sRQ1usugvheahwQ",
+                "details": "New session with url http://surfly.com/ was started"
+            }]
+        }
+
+### Create log instance [POST]
+
+
++ Request (application/json)
+
+         {
+            "session_id": "flogr0sRQ1usugvheahwQ",
+            "details": "Log message"
+        }
+
++ Response 200 (application/json)
+
+        {
+            "id": 1,
+            "agent_id": 4,
+            "created": "2016-05-31T08:22:58.310337Z",
+            "session_id": "flogr0sRQ1usugvheahwQ",
+            "details": "Log message"
+        }
+
+
+# Session Logs Collection [/logs/?api_key={API_KEY}&session_id={SESSION_ID}]
+
++ Parameters
+    + API_KEY (string, `jj34bd2db21c46d2875508b982968d26`)
+    + SESSION_ID (string, `flogr0sRQ1usugvheahwQ`)
+
+### List all session logs [GET]
+
+
++ Response 200 (application/json)
+
+        {
+            "next": null,
+            "previous": null,
+            "results": [{
+                "id": 1,
+                "agent_id": 4,
+                "created": "2016-05-30T15:13:03.253096Z",
+                "session_id": "flogr0sRQ1usugvheahwQ",
+                "details": "New session with url http://surfly.com/ was started"
+            }]
+        }
